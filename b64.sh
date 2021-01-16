@@ -11,7 +11,7 @@ if [ ! -z "$1" ]; then
     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
     convert=$(echo "$1" | base64 --decode)
     echo $convert
-    if [[ $convert =~ $regex ]] then
+    if [[ $convert =~ $regex ]]; then
 	if [[ "$OSTYPE" == "linux-gnu"* ]]; then # linux
             xdg-open "$convert"
 	elif [[ "$OSTYPE" == "darwin"* ]]; then # macOS
