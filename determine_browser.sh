@@ -21,9 +21,13 @@ Opened_app="null"
 
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"*]]; then
     eval "$PROGRAM_IMAGE $URL $NO_OUTPUT" 
+    Opened_app="$PROGRAM_IMAGE"
 elif [[ "$URL" == *"$YT_Check_1"* || "$URL" == *"$YT_Check_2"* ]]; then
     eval " $PROGRAM_VIDEO $URL $NO_OUTPUT"
     Opened_app="$PROGRAM_VIDEO"
+else
+    eval "$PROGRAM_OTHER $URL $NO_OUTPUT"
+    Opened_app="$PROGRAM_OTHER"
 fi
 
 if [ $NOTIFY_ON_OPEN -eq 1 ]; then
