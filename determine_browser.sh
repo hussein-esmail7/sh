@@ -6,14 +6,14 @@
 # Updated: 2021 04 13
 # Description: This program determines what application to open depending on the type of URL (specifically made for newsboat on Linux)
 
-NOTIFY_ON_OPEN=1
+NOTIFY_ON_OPEN=0
 
 PROGRAM_IMAGE="gwenview"
 PROGRAM_VIDEO="mpv --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=100%:50% --autofit=50%"
 PROGRAM_OTHER="brave"
 # TODO: mp3 for podcasts
 
-NO_OUTPUT="& 2>/dev/null"
+NO_OUTPUT="&>/dev/null &"
 
 URL="$1"
 YT_Check_1="youtube.com/watch?v="
@@ -27,7 +27,7 @@ elif [[ "$URL" == *"$YT_Check_1"* || "$URL" == *"$YT_Check_2"* ]]; then
     eval "$PROGRAM_VIDEO $URL & 2>/dev/null"
     Opened_app="mpv"
 else
-    eval "$PROGRAM_OTHER $URL &> /dev/null 2>&1"
+    eval "$PROGRAM_OTHER $URL &> /dev/null 2>&1 &"
     Opened_app="brave"
 fi
 
