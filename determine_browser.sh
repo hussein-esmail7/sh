@@ -22,13 +22,14 @@ Opened_app="null"
 
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then
     eval "$PROGRAM_IMAGE $URL $NO_OUTPUT" 
-    Opened_app="$PROGRAM_IMAGE"
-elif [[ "$URL" == *"$YT_Check_1"* || "$URL" == *"$YT_Check_2"* ]]; then
+    Opened_app=$(echo "$PROGRAM_IMAGE" | head -n1 | cut -d " " -f1)
+elif [[ "$URL" == *"$YT_Check_1"* || "$URL" == *"$YT_Check_2"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 ]]; then
+    # if it is a YouTube video, or on a PeerTube instance
     eval "$PROGRAM_VIDEO $URL & 2>/dev/null"
-    Opened_app="mpv"
+    Opened_app=$(echo "$PROGRAM_VIDEO" | head -n1 | cut -d " " -f1)
 else
     eval "$PROGRAM_OTHER $URL &> /dev/null 2>&1 &"
-    Opened_app="brave"
+    Opened_app=$(echo "$PROGRAM_OTHER" | head -n1 | cut -d " " -f1)
 fi
 
 if [ $NOTIFY_ON_OPEN -eq 1 ]; then
