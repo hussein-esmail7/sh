@@ -23,8 +23,9 @@ Opened_app="null"
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then
     eval "$PROGRAM_IMAGE $URL $NO_OUTPUT" 
     Opened_app=$(echo "$PROGRAM_IMAGE" | head -n1 | cut -d " " -f1)
-elif [[ "$URL" == *"$YT_Check_1"* || "$URL" == *"$YT_Check_2"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 ]]; then
+elif [[ "$URL" == *"$YT_Check_1"* ||  "$URL" == *"videos.lukesmith.xyz"* || "$URL" == *"peertube"* ]]; then
     # if it is a YouTube video, or on a PeerTube instance
+    # Used to be: "$URL" == *"$YT_Check_2"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
     eval "$PROGRAM_VIDEO $URL & 2>/dev/null"
     Opened_app=$(echo "$PROGRAM_VIDEO" | head -n1 | cut -d " " -f1)
 else
