@@ -34,6 +34,10 @@ case "$file" in
     *\.py) python3 "$file" ;;
     *\.sh) chmod +x "$file" && ./"$file" ;; 
     *\.tex) 
+        output=$(pdflatex -halt-on-error "$file" | grep '^!.*' -A200 --color=always)
+        # grep -c -e "fi" -e "if" c.sh
+        [[ grep -c -e "\cite{" -e "\bibitem{" -e "\bibliorgraphy{" -e "\bibliographystyle{" "$file" ]]; bibtex "$file"
+        output=$(pdflatex -halt-on-error "$file" | grep '^!.*' -A200 --color=always)
         for i in {1..2}; do # Sometimes it needs to be compiled twice
             output=$(pdflatex -halt-on-error "$file" | grep '^!.*' -A200 --color=always)
             if [ -n "$output" ] ; then # If output is not blank
