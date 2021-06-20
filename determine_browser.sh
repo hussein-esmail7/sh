@@ -14,7 +14,7 @@ PROG_VID="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -
 PROG_AUDIO="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=85%:80% --autofit=60% --force-window=yes"
 
 NO_OUTPUT="&>/dev/null"
-PATH_REDDIT_GALLERY_PY="/home/hussein/git/sh/reddit_gallery.py"
+PATH_REDDIT_GALLERY_PY="$HOME/git/sh/reddit_gallery.py"
 
 # URL without the arguments after '?'
 # URL="$1"

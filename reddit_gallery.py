@@ -13,15 +13,17 @@ import platform     # To get the OS type
 import os           # To check file paths
 
 bravedriver_path_macos = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
-chromedriver_path_macos = "/Users/hussein/Downloads/chromedriver"
-chromedriver_path_linux = "/home/hussein/Documents/Coding/Random/chromedriver"
+chromedriver_path_macos = os.path.expanduser("~") + "/Documents/Coding/Random/chromedriver"
+chromedriver_path_linux = os.path.expanduser("~") + "/Documents/Coding/Random/chromedriver"
 
 def main():
     options = Options()  
     options.add_argument("--headless")  # Run in background
     os_type = platform.system()
     if os_type == "Darwin":             # macOS
-        driver = webdriver.Chrome(chromedriver_path_macos, options=options)
+        options.binary_location = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+        driver = webdriver.Chrome(options=options)
+        # driver = webdriver.Chrome(chromedriver_path_macos, options=options)
     elif os_type == "Linux": 
         driver = webdriver.Chrome(chromedriver_path_linux, options=options)
     else:                               # Windows
