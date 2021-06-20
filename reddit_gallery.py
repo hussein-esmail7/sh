@@ -45,7 +45,6 @@ def main():
             print(pic_url)
         pic_urls.append(pic_url)        # Add formatted URL to aray
     print(" ".join(pic_urls))           # Print all URLs in one line
-    
     driver.close()                      # Close the browser
     options.extensions.clear()          # Clear the options that were set
     sys.exit()                          # Exit the program

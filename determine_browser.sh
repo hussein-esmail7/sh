@@ -3,7 +3,7 @@
 # determine_browser.sh
 # Hussein Esmail
 # Created: 2021 04 13
-# Updated: 2021 04 13
+# Updated: 2021 06 20
 # Description: This program determines what application to open depending on the type of URL (specifically made for newsboat on Linux)
 
 NOTIFY_ON_OPEN=0    # 1 for notification
