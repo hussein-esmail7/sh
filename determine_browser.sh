@@ -34,6 +34,7 @@ if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" 
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
     # Get the individual image URLs and open them all in one image viewer window
+    [[ "$OSTYPE" == "darwin"* ]]; PROG_IMG="open"   # Was having issues on macos, so will use the default app
     eval "$PROG_IMG $(python3 $PATH_REDDIT_GALLERY_PY $URL) $NO_OUTPUT &"
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"$YT_Check_1"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
