@@ -40,7 +40,7 @@ def main():
     pic_urls = []
     for pic in pic_list:
         pic_url = pic.get_attribute("href").split('?')[0]
-        if pic_url.endswith('.jpg'):
+        if pic_url.endswith('.jpg') or pic_url.endswith('.png'):
             pic_url = pic_url.replace('preview.', 'i.')
         else:                           # Unknown exceptions
             print("Video or non-JPG, not done.")
