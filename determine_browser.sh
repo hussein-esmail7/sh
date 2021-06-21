@@ -17,8 +17,8 @@ NO_OUTPUT="&>/dev/null"
 PATH_REDDIT_GALLERY_PY="$HOME/git/sh/reddit_gallery.py"
 
 # URL without the arguments after '?'
-# URL="$1"
-URL=$(echo "$1" | cut -f1 -d"?")
+URL="$1"
+# URL=$(echo "$1" | cut -f1 -d"?")
 
 YT_Check_1="youtube.com/watch?v="
 YT_Check_2="youtu.be/"
