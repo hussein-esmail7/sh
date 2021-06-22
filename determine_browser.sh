@@ -20,8 +20,6 @@ PATH_REDDIT_GALLERY_PY="$HOME/git/sh/reddit_gallery.py"
 URL="$1"
 # URL=$(echo "$1" | cut -f1 -d"?")
 
-YT_Check_1="youtube.com/watch?v="
-YT_Check_2="youtu.be/"
 Opened_app="null"
 
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then
@@ -39,9 +37,9 @@ elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
     fi
     eval "$PROG_IMG $(python3 $PATH_REDDIT_GALLERY_PY $URL) $NO_OUTPUT &"
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
-elif [[ "$URL" == *"$YT_Check_1"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
+elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
     # if it is a YouTube video, on a PeerTube instance, or a Reddit video
-    # Used to be: "$URL" == *"$YT_Check_2"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
+    # Used to be: "$URL" == *"youtu.be/"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
     eval "$PROG_VID $URL & 2>/dev/null"
     Opened_app=$(echo "$PROG_VID" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *".mp3"* ||  "$URL" == *".flac"* || "$URL" == *".m4a"* || "$URL" == *".wav"* || "$URL" == *".wma"* || "$URL" == *".aac"* ]]; then
