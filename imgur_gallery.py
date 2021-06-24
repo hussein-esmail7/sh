@@ -1,9 +1,9 @@
 '''
-reddit_gallery.py
+imgur_gallery.py
 Hussein Esmail
 Created: 2021 06 09
 Updated: 2021 06 20
-Description: This program prints the individual Reddit image URLs from a Reddit Gallery link.
+Description: This program prints the individual Imgur image URLs from a Imgur Gallery link.
 '''
 
 from selenium import webdriver
@@ -35,17 +35,13 @@ def main():
             sys.exit()
 
     driver.get(sys.argv[-1])            # Open the target URL
-
-    pic_list = driver.find_element_by_xpath("//ul").find_elements_by_xpath(".//a")
+    pic_list = driver.find_element_by_class_name("Gallery-ContentWrapper").find_elements_by_tag_name("img")
     pic_urls = []
     for pic in pic_list:
-        pic_url = pic.get_attribute("href").split('?')[0]
-        if pic_url.endswith('.jpg') or pic_url.endswith('.png'):
-            pic_url = pic_url.replace('preview.', 'i.')
-        else:                           # Unknown exceptions
-            print("Video or non-JPG, not done.")
-            print(pic_url)
-        pic_urls.append(pic_url)        # Add formatted URL to aray
+        pic_url = pic.get_attribute("src")
+        if pic_url not in pic_urls:
+            pic_urls.append(pic_url)        # Add formatted URL to aray
+            # print(pic_url)
     print(" ".join(pic_urls))           # Print all URLs in one line
     driver.close()                      # Close the browser
     options.extensions.clear()          # Clear the options that were set

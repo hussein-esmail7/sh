@@ -15,12 +15,17 @@ PROG_AUDIO="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1
 
 NO_OUTPUT="&>/dev/null"
 PATH_REDDIT_GALLERY_PY="$HOME/git/sh/reddit_gallery.py"
+PATH_IMGUR_GALLERY_PY="$HOME/git/sh/imgur_gallery.py"
 
 # URL without the arguments after '?'
 URL="$1"
 # URL=$(echo "$1" | cut -f1 -d"?")
 
 Opened_app="null"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then 
+    PROG_IMG="open"   # Was having issues on macos, so will use the default app
+fi
 
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then
     # If it is an image
@@ -32,11 +37,18 @@ if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" 
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
     # Get the individual image URLs and open them all in one image viewer window
-    if [[ "$OSTYPE" == "darwin"* ]]; then 
-        PROG_IMG="open"   # Was having issues on macos, so will use the default app
-    fi
     eval "$PROG_IMG $(python3 $PATH_REDDIT_GALLERY_PY $URL) $NO_OUTPUT &"
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
+elif [[ "$URL" == *"imgur.com/gallery/"* ]]; then  # Imgur Gallery images
+    # Get the individual image URLs and open them all in one image viewer window
+    
+    # TODO: FEH currently does not open .webp images, which Imgur returns. Find some way around this later.
+    # eval "$PROG_IMG $(python3 $PATH_IMGUR_GALLERY_PY $URL) $NO_OUTPUT &"
+    # Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
+
+    # These lines are here until the aboce lines are fixed.
+    eval "$BROWSER $URL &> /dev/null 2>&1 &"
+    Opened_app=$(echo "$BROWSER" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
     # if it is a YouTube video, on a PeerTube instance, or a Reddit video
     # Used to be: "$URL" == *"youtu.be/"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
