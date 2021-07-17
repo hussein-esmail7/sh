@@ -43,10 +43,11 @@ elif [[ "$URL" == *"imgur.com/gallery/"* ]]; then  # Imgur Gallery images
     # Get the individual image URLs and open them all in one image viewer window
     
     # TODO: FEH currently does not open .webp images, which Imgur returns. Find some way around this later.
+    # notify-send "Imgur link" "$URL"
     # eval "$PROG_IMG $(python3 $PATH_IMGUR_GALLERY_PY $URL) $NO_OUTPUT &"
     # Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 
-    # These lines are here until the aboce lines are fixed.
+    # These lines are here until the above lines are fixed.
     eval "$BROWSER $URL &> /dev/null 2>&1 &"
     Opened_app=$(echo "$BROWSER" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
