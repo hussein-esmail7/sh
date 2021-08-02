@@ -14,8 +14,9 @@ PROG_VID="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -
 PROG_AUDIO="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=85%:80% --autofit=60% --force-window=yes"
 
 NO_OUTPUT="&>/dev/null"
-PATH_REDDIT_GALLERY_PY="$HOME/git/sh/reddit_gallery.py"
-PATH_IMGUR_GALLERY_PY="$HOME/git/sh/imgur_gallery.py"
+PATH_REDDIT_GALLERY_PY="$HOME/git/sh/gallery_reddit.py"
+PATH_IMGUR_GALLERY_PY="$HOME/git/sh/gallery_imgur.py"
+PATH_BIBLIOGRAM_GALLERY_PY="$HOME/git/sh/gallery_bibliogram.py"
 
 # URL without the arguments after '?'
 URL="$1"
@@ -48,8 +49,15 @@ elif [[ "$URL" == *"imgur.com/gallery/"* ]]; then  # Imgur Gallery images
     # Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 
     # These lines are here until the above lines are fixed.
-    eval "$BROWSER $URL &> /dev/null 2>&1 &"
-    Opened_app=$(echo "$BROWSER" | head -n1 | cut -d " " -f1)
+    # eval "$BROWSER $URL &> /dev/null 2>&1 &"
+    # Opened_app=$(echo "$BROWSER" | head -n1 | cut -d " " -f1)
+
+    eval "$PROG_IMG $(python3 $PATH_IMGUR_GALLERY_PY $URL) $NO_OUTPUT &"
+    Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
+elif [[ "$URL" == *"bibliogram.art/p/"* || "$URL" == *"bibliogram.snopyta.org/p/"* ]]; then  # Bibliogram Gallery images
+    # Get the individual image URLs and open them all in one image viewer window
+    eval "$PROG_IMG $(python3 $PATH_BIBLIOGRAM_GALLERY_PY $URL) $NO_OUTPUT &"
+    Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* || "$URL" == "https://bibliogram.art/videoproxy/"*  || "$URL" == "https://tinyurl.com/"* ]]; then
     # if it is a YouTube video, on a PeerTube instance, or a Reddit video
     # Used to be: "$URL" == *"youtu.be/"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
