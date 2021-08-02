@@ -50,7 +50,7 @@ elif [[ "$URL" == *"imgur.com/gallery/"* ]]; then  # Imgur Gallery images
     # These lines are here until the above lines are fixed.
     eval "$BROWSER $URL &> /dev/null 2>&1 &"
     Opened_app=$(echo "$BROWSER" | head -n1 | cut -d " " -f1)
-elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* ]]; then
+elif [[ "$URL" == *"youtube.com/watch?v="* || "$URL" == *"youtu.be/"* ||  "$URL" == *"videos."* || "$URL" == *"peertube"* || "$URL" == *"v.redd.it/"* || "$URL" == "https://bibliogram.art/videoproxy/"*  || "$URL" == "https://tinyurl.com/"* ]]; then
     # if it is a YouTube video, on a PeerTube instance, or a Reddit video
     # Used to be: "$URL" == *"youtu.be/"* || $(curl -s $URL | grep -ic "PeerTube") -ge 1 but it took too long to process each time
     eval "$PROG_VID $URL & 2>/dev/null"
