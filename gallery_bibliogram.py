@@ -12,8 +12,9 @@ import requests
 
 def main():
     html = ht.fromstring(requests.get(sys.argv[-1]).content)    # Get HTML
-    links = [f"{link.get('src')}" for link in html.xpath('//img[@class="sized-image"]')]
-    print(" ".join([f"https://bibliogram.snopyta.org{link}" for link in links]))
+    if "error-page" not in html.xpath('//body')[0].classes:
+        links = [f"{link.get('src')}" for link in html.xpath('//img[@class="sized-image"]')]
+        print(" ".join([f"https://bibliogram.snopyta.org{link}" for link in links]))
     sys.exit()
 
 if __name__ == "__main__":
