@@ -28,7 +28,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     PROG_IMG="open"   # Was having issues on macos, so will use the default app
 fi
 
-if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then
+if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* || "$URL" == *"preview.redd.it/"*".jpg"* ]]; then
     # If it is an image
     HTML_CODE=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "$URL")
     if [[ "$URL" == *"preview.redd.it/"* ]]; then   # Support for https://preview.redd.it/... URLs
