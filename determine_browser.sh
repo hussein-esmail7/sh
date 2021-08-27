@@ -7,21 +7,16 @@
 # Description: This program determines what application to open depending on the type of URL (specifically made for newsboat on Linux)
 
 NOTIFY_ON_OPEN=0    # 1 for notification
-VID_SCREEN=2        # Open on 3rd monitor
+VID_SCREEN=2        # Open on 3rd monitor (0 for 1st monitor)
 
 PROG_IMG="feh -q. -g 1000x1000"
 PROG_VID="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=0:0 --autofit=100%"
 PROG_AUDIO="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=85%:80% --autofit=60% --force-window=yes"
-
 NO_OUTPUT="&>/dev/null"
 PATH_REDDIT_GALLERY_PY="$HOME/git/sh/gallery_reddit.py"
 PATH_IMGUR_GALLERY_PY="$HOME/git/sh/gallery_imgur.py"
 PATH_BIBLIOGRAM_GALLERY_PY="$HOME/git/sh/gallery_bibliogram.py"
-
-# URL without the arguments after '?'
 URL="$1"
-# URL=$(echo "$1" | cut -f1 -d"?")
-
 Opened_app="null"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then 
