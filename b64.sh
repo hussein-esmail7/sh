@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# === PROGRAM DESCRIPTION ===
-# This program decodes a base64 
-# string into a readable string.
-# If the readable string is a URL, 
-# it automatically opens the URL in
-# the default browser.
+# gitpush.sh
+# Hussein Esmail
+# Created: 2021 01 03
+# Updated: 2021 08 27
+# Description: This program decodes a base64 string into a readable string. If the readable string is a URL, it automatically opens the URL in the default browser.
 
 if [ ! -z "$1" ]; then
     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
@@ -13,9 +12,7 @@ if [ ! -z "$1" ]; then
     echo "$convert"
     if [[ "$convert" =~ $regex && "$convert" != *$'\r'* ]]; then # If it matches the URL regex (and is not multiple lines)
         if [[ "$OSTYPE" == "linux-gnu"* ]]; then # linux
-            if [[ $(whoami | tr '[:upper:]' '[:lower:]') == *"hussein"* ]]; then 
-                # If username.lower() contains "hussein" (aka for me only, Hussein)
-                # My personal fix for opening URLs
+            if [[ $(whoami | tr '[:upper:]' '[:lower:]') == *"hussein"* ]]; then # If username has "hussein" (me only)
                 ~/git/sh/determine_browser.sh "$convert"
             else
                 xdg-open "$convert"
