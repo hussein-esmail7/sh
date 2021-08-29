@@ -27,8 +27,7 @@ fi
 
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then # If it is an image
     # Replace "preview" with "i" since it is an image, Get rid of the display arguments and just pass the image link
-    [[ "$URL" == *"preview.redd.it/"* ]] ; URL=$(echo "${URL/preview/i}" | cut -f1 -d"?")          
-    fi
+    [[ "$URL" == *"preview.redd.it/"* ]] ; URL=$(echo "${URL/preview/i}" | cut -f1 -d"?")
     eval "$PROG_IMG $URL $NO_OUTPUT &" 
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
