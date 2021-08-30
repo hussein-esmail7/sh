@@ -6,7 +6,7 @@
 # Updated: 2021 08 29
 # Description: This program determines what application to open depending on the type of URL (specifically made for newsboat on Linux)
 
-NOTIFY_ON_OPEN=1    # 1 for notification
+NOTIFY_ON_OPEN=0    # 1 for notification
 VID_SCREEN=2        # Open on 3rd monitor (0 for 1st monitor)
 
 PROG_VID="mpv --screen=$VID_SCREEN --no-terminal --keep-open=yes --osd-level=1 -osd-font-size=18 --geometry=0:0 --autofit=100%"
