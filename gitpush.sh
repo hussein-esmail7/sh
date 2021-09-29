@@ -12,7 +12,7 @@ if [ ! -z "$1" ]; then
     cd "$DIR"               # Go to directory being pushed
 fi
 git add .
-git commit --quiet
+git commit --quiet --message="modified file"
 git push --quiet
 
 exit 0
