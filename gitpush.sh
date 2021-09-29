@@ -13,6 +13,6 @@ if [ ! -z "$1" ]; then
 fi
 git add .
 git commit
-git push
+git push --quiet
 
 exit 0
