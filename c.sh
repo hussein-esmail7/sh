@@ -33,7 +33,7 @@ fi
 for file in "$@" # file = given argument. You can pass multiple files at the same time.
 do
     
-    elif [ ! -f "$1" ] ; then   # If file is not in the current dir or does not exist if given the full path
+    if [ ! -f "$1" ] ; then   # If file is not in the current dir or does not exist if given the full path
         echo "File does not exist in directory!"
         exit 1
     fi
