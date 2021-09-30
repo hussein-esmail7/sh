@@ -16,13 +16,14 @@ if [ -z "$1" ] ; then         # If no arguments are given
     echo ""
     echo "This program compiles given file names."
     echo ""
-    echo ".tex: Converts to PDF (with BibTeX, makeglossaries) if necessary."
     echo ".c: Compiles using gcc"
     echo ".cpp: Compiles using g++"
     echo ".html: Uses 'open' command"
     echo ".java: Runs using 'java' command"
+    echo ".ms: Converts Groff to PDF via PostScript"
     echo ".py: Runs using python3"
     echo ".sh: Runs in terminal"
+    echo ".tex: Converts to PDF (with BibTeX, makeglossaries) if necessary."
     echo "All other file extensions: uses 'open' command"
     echo ""
     echo "See https://github.com/hussein-esmail7/sh for more info."
@@ -45,6 +46,11 @@ do
         *\.cpp) g++ -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
         *\.html) open "$file" ;;
         *\.java) java "$file" ;;
+        *\.ms) 
+            groff -ms -e -t -p "$file" > ".${file%.*}.ps"    # Converts the .ms into post script
+            cupsfilter temp.ps > "${file%.*}.pdf"            # Converts post script file into PDF
+            rm -f ".${file%.*}.ps"                           # Remove the temporary file
+        ;;
         *\.py) python3 "$file" ;;
         *\.sh) chmod +x "$file" && ./"$file" ;; 
         *\.tex) 
