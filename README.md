@@ -66,6 +66,7 @@ Instead of typing `git add .`, `git commit`, and `git push` each time I want to 
 This program outputs your local and public IP address.
 
 ### plex.sh
+This returns a 1 or a 0 depending if `plexmediaserver` is sending a lot of data over the local network. If it is, someone is probably watching something on it.
 
 ### update.sh
 This program is a collection of update commands so that I don't have to worry about updating individual items and I just have to run this.
