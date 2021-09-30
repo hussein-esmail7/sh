@@ -22,26 +22,27 @@ elif [ ! -f "$1" ] ; then
     exit 1
 fi
 
-file="$1"               # First (and only) input
-dir=$(dirname "$file")  # Directory of the file
-base="${file##*.}"      # File extension only
-shebang="${file%.*}"    # File name before the extension
+for file in "$@" # file = given argument. You can pass multiple files at the same time.
+do
+    dir=$(dirname "$file")  # Directory of the file
+    base="${file##*.}"      # File extension only
+    shebang="${file%.*}"    # File name before the extension
 
-case "$file" in
-    *\.c) gcc -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
-    *\.cpp) g++ -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
-    *\.html) open "$file" ;;
-    *\.java) java "$file" ;;
-    *\.py) python3 "$file" ;;
-    *\.sh) chmod +x "$file" && ./"$file" ;; 
-    *\.tex) 
-        pdflatex --interaction=batchmode "$file"
-        [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliorgraphy{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1 ]]; bibtex "$shebang"
-        [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$shebang"
-        pdflatex --interaction=batchmode "$file"
-        rm -f "__latexindent_temp.tex" "${shebang}.fdb_latexmk" "${shebang}.fls" "${shebang}.log" "${shebang}.aux" "${shebang}.synctex.gz" "${shebang}.out" "${shebang}.toc" "${shebang}.run.xml" "${shebang}.bbl" "${shebang}.blg" "${shebang}.bcf"
-    ;;
-    *) open "$file" ;; # Default statement
-esac
-
+    case "$file" in
+        *\.c) gcc -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
+        *\.cpp) g++ -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
+        *\.html) open "$file" ;;
+        *\.java) java "$file" ;;
+        *\.py) python3 "$file" ;;
+        *\.sh) chmod +x "$file" && ./"$file" ;; 
+        *\.tex) 
+            pdflatex --interaction=batchmode "$file"
+            [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliorgraphy{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1 ]]; bibtex "$shebang"
+            [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$shebang"
+            pdflatex --interaction=batchmode "$file"
+            rm -f "__latexindent_temp.tex" "${shebang}.fdb_latexmk" "${shebang}.fls" "${shebang}.log" "${shebang}.aux" "${shebang}.synctex.gz" "${shebang}.out" "${shebang}.toc" "${shebang}.run.xml" "${shebang}.bbl" "${shebang}.blg" "${shebang}.bcf"
+        ;;
+        *) open "$file" ;; # Default statement
+    esac
+done
 exit 0
