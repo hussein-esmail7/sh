@@ -6,6 +6,8 @@
 # Updated: 2021 12 14
 # Description: This script makes it faster to push files to git repositories
 
+commit_msg="modified file"
+
 # Get the options
 while getopts ":hdm:" option; do
 	case $option in
@@ -26,9 +28,6 @@ while getopts ":hdm:" option; do
 			exit;;
 	esac
 done
-
-# Filling in empty variables
-[ -z "$commit_msg" ] ; commit_msg="modified file"
 
 git add .
 git commit --quiet --message="$commit_msg"
