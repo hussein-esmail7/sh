@@ -21,7 +21,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     PROG_IMG="open"         # Was having issues on macos, so will use the default app
     PROG_BROWSER="open"
 else
-    PROG_IMG="feh -q. -g 1000x1000"
+    PROG_IMG="feh -q." #-g 1000x1000"
     PROG_BROWSER=$BROWSER
 fi
 
