@@ -8,35 +8,23 @@ Description: This program prints the individual Reddit image URLs from a Reddit 
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service # Used to set Chrome location
+from selenium.webdriver.chrome.options import Options # Used to add aditional settings (ex. run in background)
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By # Used to determine type to search for (normally By.XPATH)
 import sys          # To exit the program and get arguments
 import platform     # To get the OS type
 import os           # To check file paths
-
-bravedriver_path_macos = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
-chromedriver_path_macos = os.path.expanduser("~") + "/Documents/Coding/Random/chromedriver"
-chromedriver_path_linux = os.path.expanduser("~") + "/Documents/Coding/Random/chromedriver"
 
 def main():
     options = Options()  
     options.add_argument("--headless")  # Run in background
     os_type = platform.system()
-    if os_type == "Darwin":             # macOS
-        options.binary_location = bravedriver_path_macos
-        driver = webdriver.Chrome(options=options)
-        # driver = webdriver.Chrome(chromedriver_path_macos, options=options)
-    elif os_type == "Linux": 
-        driver = webdriver.Chrome(chromedriver_path_linux, options=options)
-    else:                               # Windows
-        chromedriver_path_windows = input("Path of chromedriver for Windows: ")
-        if os.path.exists(chromedriver_path_windows):
-            driver = webdriver.Chrome(chromedriver_path_windows, options=options)
-        else:
-            print("Path not valid.")
-            sys.exit()
-
+    service = Service(ChromeDriverManager(log_level=0).install())
+    driver = webdriver.Chrome(service=service, options=options)
     driver.get(sys.argv[-1])            # Open the target URL
 
-    pic_list = driver.find_element_by_xpath("//ul").find_elements_by_xpath(".//a")
+    pic_list = driver.find_element(By.XPATH, "//ul").find_elements(By.XPATH, ".//a")
     pic_urls = []
     for pic in pic_list:
         pic_url = pic.get_attribute("href").split('?')[0]
@@ -45,7 +33,7 @@ def main():
         else:                           # Unknown exceptions
             print("Video or non-JPG, not done.")
             print(pic_url)
-        pic_urls.append(pic_url)        # Add formatted URL to aray
+        pic_urls.append(pic_url)        # Add formatted URL to array
     print(" ".join(pic_urls))           # Print all URLs in one line
     driver.close()                      # Close the browser
     options.extensions.clear()          # Clear the options that were set
