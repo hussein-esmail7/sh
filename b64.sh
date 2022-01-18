@@ -23,5 +23,5 @@ if [ ! -z "$1" ]; then
             echo "$OSTYPE: Don't know how to open links for this OS."
             # If it ever reaches this and you have a solution, please submit a pull request! I also want to make my code usable for others, regardless of your operating system.
         fi
-    fi	
+    fi
 fi

@@ -17,7 +17,7 @@ PATH_IMGUR_GALLERY_PY="$HOME/git/sh/gallery_imgur.py"
 PATH_BIBLIOGRAM_GALLERY_PY="$HOME/git/sh/gallery_bibliogram.py"
 URL="$1"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then 
+if [[ "$OSTYPE" == "darwin"* ]]; then
     PROG_IMG="open"         # Was having issues on macos, so will use the default app
     PROG_BROWSER="open"
 else
@@ -28,7 +28,7 @@ fi
 if [[ "$URL" == *".png"* || "$URL" == *".jpg"* || "$URL" == *".jpeg"* || "$URL" == *".gif"* || "$URL" == *".tiff"* || "$URL" == *".bmp"* ]]; then # If it is an image
     # Replace "preview" with "i" since it is an image, Get rid of the display arguments and just pass the image link
     [[ "$URL" == *"preview.redd.it/"* ]] ; URL=$(echo "${URL/preview/i}" | cut -f1 -d"?")
-    eval "$PROG_IMG $URL $NO_OUTPUT &" 
+    eval "$PROG_IMG $URL $NO_OUTPUT &"
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
     # Get the individual image URLs and open them all in one image viewer window
@@ -36,7 +36,7 @@ elif [[ "$URL" == *"reddit.com/gallery/"* ]]; then  # Reddit Gallery images
     Opened_app=$(echo "$PROG_IMG" | head -n1 | cut -d " " -f1)
 elif [[ "$URL" == *"imgur.com/gallery/"* ]]; then  # Imgur Gallery images
     # Get the individual image URLs and open them all in one image viewer window
-    
+
     # TODO: FEH currently does not open .webp images, which Imgur returns. Find some way around this later.
     # notify "Imgur link" "$URL"
     # eval "$PROG_IMG $(python3 $PATH_IMGUR_GALLERY_PY $URL) $NO_OUTPUT &"
@@ -67,7 +67,7 @@ else
 fi
 
 if [[ $NOTIFY_ON_OPEN -eq 1 && ! -z $Opened_app ]]; then
-    if [[ "$OSTYPE" == "darwin"* ]]; then 
+    if [[ "$OSTYPE" == "darwin"* ]]; then
         osascript -e "display notification \"$URL\" with title \"Opened in $Opened_app\""
     else
         notify-send "Opened in $Opened_app: $URL"

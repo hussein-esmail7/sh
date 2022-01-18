@@ -14,9 +14,9 @@ OS=$(uname) # Figure out if running on a mac of Linux computer
 if [ $OS == "Darwin" ]; then
 	cd "/Users/$(whoami)/.newsboat/"
 	sed "s/\/home\//\/Users\//g" "urls" > "urls"
-elif [ $OS == "Linux" ]; then 
+elif [ $OS == "Linux" ]; then
 	cd "/home/$(whoami)/.config/newsboat/"
-	sed "s/\/Users\//\/home\//g" "urls" > "urls" 
+	sed "s/\/Users\//\/home\//g" "urls" > "urls"
 fi
 
 echo "Program completed"

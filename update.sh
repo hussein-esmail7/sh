@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-# PROGRAM DESCRIPTION 
-# This program performes all various update commands so I 
+# PROGRAM DESCRIPTION
+# This program performes all various update commands so I
 # dont have to worry about updating specific apps
 
 # Reload newsboat articles
@@ -38,7 +38,7 @@ fi
 while true; do
     read -p "Update pip packages [y/n]? " yn
     case $yn in
-        [Yy]* ) 
+        [Yy]* )
             # Update pip
             pip3 --quiet --no-input install --upgrade pip
             python3 -m pip install --upgrade pip
@@ -55,7 +55,7 @@ done
 while true; do
     read -p "Update git clones [y/n]? " yn
     case $yn in
-        [Yy]* ) 
+        [Yy]* )
             IFS=$'\n' git_locations=($(find $HOME -name ".git"))
             for i in "${git_locations[@]}" ; do
                 cd "${i%.*}" ; echo "Updating git folder $i" ; git pull || echo "Could not update $i"

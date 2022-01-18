@@ -17,14 +17,14 @@ chromedriver_path_macos = os.path.expanduser("~") + "/Documents/Coding/Random/ch
 chromedriver_path_linux = os.path.expanduser("~") + "/Documents/Coding/Random/chromedriver"
 
 def main():
-    options = Options()  
+    options = Options()
     options.add_argument("--headless")  # Run in background
     os_type = platform.system()
     if os_type == "Darwin":             # macOS
         options.binary_location = bravedriver_path_macos
         driver = webdriver.Chrome(options=options)
         # driver = webdriver.Chrome(chromedriver_path_macos, options=options)
-    elif os_type == "Linux": 
+    elif os_type == "Linux":
         driver = webdriver.Chrome(chromedriver_path_linux, options=options)
     else:                               # Windows
         chromedriver_path_windows = input("Path of chromedriver for Windows: ")

@@ -11,7 +11,7 @@ SHEET_OPTIONS[1]="groff"
 
 if [ ! -z "$1" ] ; then     # If an arg is given, it is which cheatsheet to open
     SHEET_PROGRAM="$1"
-    [[ ! " ${SHEET_OPTIONS[*]} " =~ " ${SHEET_PROGRAM} " ]] ; echo "'${SHEET_PROGRAM}' is not an option" ; exit 1 
+    [[ ! " ${SHEET_OPTIONS[*]} " =~ " ${SHEET_PROGRAM} " ]] ; echo "'${SHEET_PROGRAM}' is not an option" ; exit 1
 else                        # If no args are given, ask using fzf
     SHEET_PROGRAM=$(for explain in ${SHEET_OPTIONS[@]}; do echo "${explain}"; done | fzf)
     [[ "$SHEET_PROGRAM" == "" ]] ; exit 0

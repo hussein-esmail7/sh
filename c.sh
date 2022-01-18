@@ -32,7 +32,7 @@ fi
 
 for file in "$@" # file = given argument. You can pass multiple files at the same time.
 do
-    
+
     if [ ! -f "$1" ] ; then   # If file is not in the current dir or does not exist if given the full path
         echo "File does not exist in directory!"
         exit 1
@@ -46,14 +46,14 @@ do
         *\.cpp) g++ -o "$shebang" "$file" ; chmod +x "$shebang" ; ./"$shebang" ;;
         *\.html) open "$file" ;;
         *\.java) java "$file" ;;
-        *\.ms) 
+        *\.ms)
             groff -ms -e -t -p "$file" > ".${file%.*}.ps"    # Converts the .ms into post script
             cupsfilter temp.ps > "${file%.*}.pdf"            # Converts post script file into PDF
             rm -f ".${file%.*}.ps"                           # Remove the temporary file
         ;;
         *\.py) python3 "$file" ;;
-        *\.sh) chmod +x "$file" && ./"$file" ;; 
-        *\.tex) 
+        *\.sh) chmod +x "$file" && ./"$file" ;;
+        *\.tex)
 			# \usepackage{lua-ul}
 			if [[ $(grep "\usepackage{lua-ul}" "$file" | wc -l) -ge 1 ]] ; then
 				LATEX_ENGINE="lualatex"
