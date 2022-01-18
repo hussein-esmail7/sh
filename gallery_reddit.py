@@ -15,14 +15,39 @@ from selenium.webdriver.common.by import By # Used to determine type to search f
 import sys          # To exit the program and get arguments
 import platform     # To get the OS type
 import os           # To check file paths
+import validators
+
+# ========= COLOR CODES =========
+color_end               = '\033[0m'
+color_darkgrey          = '\033[90m'
+color_red               = '\033[91m'
+color_green             = '\033[92m'
+color_yellow            = '\033[93m'
+color_blue              = '\033[94m'
+color_pink              = '\033[95m'
+color_cyan              = '\033[96m'
+color_white             = '\033[97m'
+color_grey              = '\033[98m'
+
+# ========= COLORED STRINGS =========
+str_prefix_q            = f"[{color_pink}Q{color_end}]"
+str_prefix_y_n          = f"[{color_pink}y/n{color_end}]"
+str_prefix_ques         = f"{str_prefix_q}\t "
+str_prefix_err          = f"[{color_red}ERROR{color_end}]\t "
+str_prefix_done         = f"[{color_green}DONE{color_end}]\t "
+str_prefix_info         = f"[{color_cyan}INFO{color_end}]\t "
 
 def main():
-    options = Options()  
+    options = Options()
     options.add_argument("--headless")  # Run in background
     os_type = platform.system()
     service = Service(ChromeDriverManager(log_level=0).install())
     driver = webdriver.Chrome(service=service, options=options)
-    driver.get(sys.argv[-1])            # Open the target URL
+    url_to_open = sys.argv[-1]
+    if not validators.url(url_to_open):
+        print(str_prefix_err + "Not a URL: '" + url_to_open + "'")
+        sys.exit(1)
+    driver.get(url_to_open)            # Open the target URL
 
     pic_list = driver.find_element(By.XPATH, "//ul").find_elements(By.XPATH, ".//a")
     pic_urls = []
