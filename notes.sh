@@ -1,3 +1,41 @@
+#!/bin/bash
+
+# notes.sh
+# Hussein Esmail
+# Created: 2022 03 05
+# Updated: 2022 03 05
+# Description: Opens specific note file that you specify
+#	Example command: `notes 3221` opens the .tex note in your editor that
+#	matches the `3221` string. If there are multiple matches, it will list the
+#	possible matches, and make you run the program again and to be more
+#	specific. If there's `MATH3221` and `EECS3221`, you can type
+#	`notes MATH3221` or `notes MATH 3221` (will return same result)
+
+MODE_Q=0 # 1 if program is in quiet mode
+MODW_F=0 # 1 if program is in filename-only mode
+MODE_EDITOR="$EDITOR" # changed if user uses "editor" command
+
+# Get the options
+while getopts ":hqf:" option; do
+	case $option in
+		h)	# display help message
+			echo "Syntax: notes [-h|q|f]"
+			echo "options:"
+			echo "h		Print this help message."
+			echo "q		Open file without printing anything"
+			echo "f		Print filename only without opening"
+			echo ""
+			exit;;
+		q) # Quiet mode - open file without printing anything
+			MODE_Q=1 ;;
+		f)	# Print file name only without opening
+			echo "File mode"
+			MODW_F=1 ;;
+		\?)	# Invalid option
+			echo "Error: '$OPTARG' is an invalid option"
+			exit ;;
+	esac
+done
 
 if [ -z "$1" ] ; then
 	# If no additional arguments given, cd into the school folder
@@ -24,19 +62,24 @@ elif [ ! -z "$1" ] ; then
 	fi
 	[[ $(echo "$input" | tr '[:upper:]' '[:lower:]') == "vcp" ]] ; file_name="VCP.tex"
 	if [ ! -z "$file_name" ] ; then
+		# Only look for .tex (LaTeX) files
 		suffix=".tex"
+		# Put the 2 strings together
 		file_name=$input$suffix
 		cd "$NOTES_DIR"
 		file_results=$(find . -name "*$file_name")
 		if [ -z "$file_results" ] ; then
+			# If there are no results
 			echo "No results found"
 		elif [ $(echo "$file_results" | wc -l) == 1 ] ; then
 			# If there is 1 matching file (line in this case) and is not empty
 			# Print what file is being opened (full path while in its dir)
 			echo "Opening $(pwd)${file_results:1}"
 			# Actually open the file
-			$EDITOR "$file_results"
+			exec $EDITOR "$file_results"
 		else
+			# If there are multiple results, list them so the user can be more
+			# specific next time this program is run
 			echo "Multiple results!"
 			echo "$file_results"
 		fi
