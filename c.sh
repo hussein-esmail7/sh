@@ -67,12 +67,13 @@ do
             [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliorgraphy{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1 ]]; bibtex "$shebang"
             [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$shebang"
             $LATEX_ENGINE --interaction=batchmode "$file"
-            rm -f "__latexindent_temp.tex" "${shebang}.fdb_latexmk" "${shebang}.fls" "${shebang}.log" "${shebang}.aux" "${shebang}.synctex.gz" "${shebang}.out" "${shebang}.toc" "${shebang}.run.xml" "${shebang}.bbl" "${shebang}.blg" "${shebang}.bcf" "${shebang}.mx1" "${shebang}.nav" "${shebang}.snm"
+            rm -f "__latexindent_temp.tex" "${shebang}.fdb_latexmk" "${shebang}.fls" "${shebang}.log" "${shebang}.aux" "${shebang}.synctex.gz" "${shebang}.out" "${shebang}.toc" "${shebang}.run.xml" "${shebang}.bbl" "${shebang}.blg" "${shebang}.bcf" "${shebang}.mx1" "${shebang}.nav" "${shebang}.snm" "${shebang}.tdo"
 			# .toc: Used to make table of contents
 			# .bbl: Used for bibliographies
 			# .mx1: Used for musictex library (typing sheetmusic)
 			# .nav: beamer temporary table of contents file
 			# .snm: Used with beamer, don't know what this is for. Empty file
+			# .tdo: Used by todonotes package
         ;;
         *) open "$file" ;; # Default statement
     esac
