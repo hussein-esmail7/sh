@@ -64,7 +64,7 @@ do
 			echo "USING $LATEX_ENGINE"
 			echo "===================="
             $LATEX_ENGINE --interaction=batchmode "$file"
-            [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliorgraphy{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1 ]]; bibtex "$shebang"
+            [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliography{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1  ]]; biber "$shebang"
             [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$shebang"
             $LATEX_ENGINE --interaction=batchmode "$file"
             rm -f "__latexindent_temp.tex" "${shebang}.fdb_latexmk" "${shebang}.fls" "${shebang}.log" "${shebang}.aux" "${shebang}.synctex.gz" "${shebang}.out" "${shebang}.toc" "${shebang}.run.xml" "${shebang}.bbl" "${shebang}.blg" "${shebang}.bcf" "${shebang}.mx1" "${shebang}.nav" "${shebang}.snm" "${shebang}.tdo" "${shebang}.lot" "${shebang}.lof"
