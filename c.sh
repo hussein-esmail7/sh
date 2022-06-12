@@ -21,6 +21,7 @@ if [ -z "$1" ] ; then         # If no arguments are given
     echo ".html: Uses 'open' command"
     echo ".java: Runs using 'java' command"
     echo ".ms: Converts Groff to PDF via PostScript"
+    echo ".pdf: Opens the PDF in the default application"
     echo ".py: Runs using python3"
     echo ".sh: Runs in terminal"
     echo ".tex: Converts to PDF (with BibTeX, makeglossaries) if necessary."
@@ -52,8 +53,24 @@ do
             rm -f ".${file%.*}.ps"                           # Remove the temporary file
         ;;
         *\.py) python3 "$file" ;;
+        *\.pdf)
+        	# Open the PDF file
+        	if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        		# If you are opening the PDF in Linux
+				echo "Opening PDF in Okular"
+				okular "$file" & > /dev/null
+        	elif [[ "$OSTYPE" == "darwin"* ]]; then
+        		# If you are opening the PDF in macOS
+        		open "$file" # Will open in default PDF application
+        	else
+        		echo "ERROR: I don't know how to open PDFs in this OS: $OSTYPE"
+        		# If it ever reaches this and you have a solution, please submit
+        		# a pull request! I also want to make my code usable for others,
+        		# regardless of your operating system.
+        	fi
+			;;
         *\.sh) chmod +x "$file" && ./"$file" ;;
-        *\.tex)
+		*\.tex) # LaTeX files (compile)
 			# \usepackage{lua-ul}
 			if [[ $(grep "\usepackage{lua-ul}" "$file" | wc -l) -ge 1 ]] ; then
 				LATEX_ENGINE="lualatex"
