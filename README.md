@@ -7,6 +7,7 @@ too!
 - [Installation](#Installation)
 - [File Descriptions](#file-descriptions)
 	- [Base64 Converter](#b64.sh)
+	- [Bulk Rename](#bulkrename.sh)
 	- [Cheetsheet](#cheetsheet.sh)
     - [Compile!](#c.sh)
     - [Open in that program](determine_browser.sh)
@@ -17,6 +18,7 @@ too!
     - [What is my IP?](#ip.sh)
     - [Is someone watching something on Plex?](plex.sh)
 	- [What was that update command again?](#update.sh)
+	- [YouTube Audio](#yta.sh)
 - [Donate](#donate)
 
 ## Installation
@@ -50,12 +52,18 @@ Here is a list of the file descriptions in this repository.
 This program decodes a base64 string into a readable string. If the readable
 string is a URL, it automatically opens the URL in the default browser.
 
+### bulkrename.sh
+This program opens a list of files (as full paths) in Vim, and you can edit all
+the file names in that folder in Vim. Useful for formatting many titles at
+the same time. The only requirement is that you do not change the order of
+the lines in the buffer.
+
 ### c.sh
 This program compiles files. Instead of trying to remember which program to use
 to do it or if you need multiple lines, I have this program look at the given
 file extension and let it do the work. Currently it works with these
-extensions: `.c`, `.cpp`, `.html`, `.java`, `.ms`, `.py`, `.sh`, `.tex`, and
-possibly more if I forget to update this README file...
+extensions: `.c`, `.cpp`, `.html`, `.java`, `.ms`, `.pdf`, `.py`, `.sh`,
+`.tex`, and possibly more if I forget to update this README file...
 
 ### determine_browser.sh
 This program looks at what the given URL is, and determine what to open it in.
@@ -85,6 +93,11 @@ something on it.
 
 ### update.sh This program is a collection of update commands so that I don't
 have to worry about updating individual items and I just have to run this.
+
+### yta.sh
+This program uses [yt-dlp](https://github.com/yt-dlp/yt-dlp) to download just
+the audio of a passed YouTube video. I use yt-dlp instead of YouTube-dl because
+it is better-maintained and downloads videos faster.
 
 ## Donate
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/husseinesmail)
