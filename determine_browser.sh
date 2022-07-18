@@ -62,7 +62,7 @@ elif [[ "$URL" == *".mp3"* ||  "$URL" == *".flac"* || "$URL" == *".m4a"* || "$UR
     eval "$PROG_AUDIO $URL & 2>/dev/null"
     Opened_app=$(echo "$PROG_AUDIO" | head -n1 | cut -d " " -f1)
 else
-    eval "$PROG_BROWSER $URL &> /dev/null 2>&1 &"
+    eval "$PROG_BROWSER \"$URL\" &> /dev/null 2>&1 &"
     Opened_app=$(echo "$PROG_BROWSER" | head -n1 | cut -d " " -f1)
 fi
 
