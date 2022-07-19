@@ -52,7 +52,7 @@ do
             cupsfilter temp.ps > "${file%.*}.pdf"            # Converts post script file into PDF
             rm -f ".${file%.*}.ps"                           # Remove the temporary file
         ;;
-        *\.py) python3 "$file" ;;
+        *\.py) python3 "$file" "${@:2}" ;;
         *\.pdf)
         	# Open the PDF file
         	if [[ "$OSTYPE" == "linux-gnu"* ]]; then
