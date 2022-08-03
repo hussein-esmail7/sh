@@ -65,6 +65,14 @@ file extension and let it do the work. Currently it works with these
 extensions: `.c`, `.cpp`, `.html`, `.java`, `.ms`, `.pdf`, `.py`, `.sh`,
 `.tex`, and possibly more if I forget to update this README file...
 
+`-o` option: This opens the document after it is compiled if it isn't required
+to open afterwards. Example: You don't need to open a compiled `.pdf` document
+from the passed `.tex` file. Passing `-o` opens that PDF afterwards.
+> :warning: If using Okular, make sure you have this setting checked, or else
+> it will keep opening new instances of the same PDF: In Okular, `Settings >
+> Configure Okular > Program (list of checkboxes) > Open new files in tabs
+> (make sure it is checked)`
+
 ### determine_browser.sh
 This program looks at what the given URL is, and determine what to open it in.
 I mainly use this to open image and audio links in `feh`, videos in `mpv`, and
