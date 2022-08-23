@@ -73,6 +73,11 @@ from the passed `.tex` file. Passing `-o` opens that PDF afterwards.
 > Configure Okular > Program (list of checkboxes) > Open new files in tabs
 > (make sure it is checked)`
 
+`-q` option: This option sets the program to quiet mode (as much as it can).
+
+`-k` option: When this option is given, the program does not delete any
+temporary files that may have been created.
+
 ### determine_browser.sh
 This program looks at what the given URL is, and determine what to open it in.
 I mainly use this to open image and audio links in `feh`, videos in `mpv`, and
