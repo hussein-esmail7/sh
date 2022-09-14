@@ -10,6 +10,7 @@
 # - .py files: Runs via python command
 # - All others: Open in default application
 
+# TODO: If running the program with a full path as the file name, output in the same folder. At the moment it outputs in the current directory
 
 CONFIG_OPEN_OUTPUT=0 # Do not open output file. True if you pass "-o"
 CONFIG_KEEP_TEMP_FILES=0 # Do not keep temp files unless you pass "-k"
