@@ -12,7 +12,7 @@ echo "Newsboat updated."
 os=$(uname -a | awk '{print $(1);}') # This command works on macOS and Linux
 
 if [[ "$os" == "Linux" ]]; then # Linux System
-    sudo pacman -Syyu
+    sudo pacman -S archlinux-keyring && sudo pacman -Syyu
     yay -Syyu --devel   # Update AUR packages + git dependencies
 elif [[ "$os" == "Darwin" ]]; then # macOS System
     # Update homebrew packages and apps
