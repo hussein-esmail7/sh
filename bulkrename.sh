@@ -7,6 +7,9 @@
 # Description: This script puts all items in the CWD into your editor where
 #	you can rename them, and it will do so depending on the order of the files
 
+# TODO: This command does not work on macOS as of 2023 01 06.
+# Error given: "readarray: command not found"
+
 # VARIABLES
 FILE_OLD=".rename_old"
 FILE_NEW=".rename_new"
