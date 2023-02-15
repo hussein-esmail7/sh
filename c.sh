@@ -154,6 +154,7 @@ do
             [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliography{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1  ]]; biber "$front"
             [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$front"
             $LATEX_ENGINE --interaction=batchmode "$file"
+            $LATEX_ENGINE --interaction=batchmode "$file" # Run a third time
 			if [ $CONFIG_KEEP_TEMP_FILES -eq 0 ] ; then
 				rm -f "${front}.aux" # Default output file
             	rm -f "${front}.bbl" # Used for bibliographies
