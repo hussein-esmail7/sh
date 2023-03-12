@@ -31,7 +31,7 @@ FILE_REGEX="(\w{2,4})?\h?\d{4}\b"
 #	\b: End of word
 
 MODE_Q=0 # 1 if program is in quiet mode
-MODE_F=0 # 1 if program is in filename-only mode
+MODE_F=0 # 1 if program is in filename-only mode (only print path)
 MODE_EDITOR="$EDITOR" # changed if user uses "editor" command
 NUM_ARGS="$#" # Number of arguments passed
 
@@ -64,6 +64,7 @@ if [[ $MODE_Q == 1 && $MODE_F == 1 ]] ; then
 	MODE_Q=0
 fi
 
+file_open="" # File path will go into this variable
 if [ "$#" -ge 1 ] ; then # If there is at least 1 argument
 	input="$*" # Join all arguments together in case there are spaces
 	input=${input%$'\n'} # Get rid of newline character
@@ -82,32 +83,65 @@ if [ "$#" -ge 1 ] ; then # If there is at least 1 argument
 		if [[ -z "$file_results" && $MODE_Q -eq 0 ]] ; then
 			# If there are no results
 			echo "No results found"
-		elif [ $(echo "$file_results" | wc -l) == 1 ] ; then
-				# If there is 1 matching file (line in this case) and is not empty
+			exit 1 # Quit the program
+		fi
+		# Count the number of results in case there are multiple
+		file_result_count=$(echo "$file_results" | wc -l | xargs)
+		if [[ "$file_result_count" > 1 ]] ; then
+			# If there are multiple results, list them so the user can be more
+			# specific next time this program is run. 
+			# If only one of those
+			echo "Multiple results!"
+			echo "$file_results"
+
+			# files is in the current directory, prefer that one but list the
+			# other options still
+			files_in_current_dir=0 # Counter for files in current dir only
+			for i in ${file_results//\n/ } ; do
+				slash_count="$(echo "$i" | tr -cd '/' | wc -c | xargs)"
+				if [ "${slash_count}" == 1 ] ; then
+					# If there is only 1 "/", meaning it is in the
+					# current directory
+					files_in_current_dir=$((files_in_current_dir+1))
+					# ^ Increase the number of files in current dir by 1
+					if [ $files_in_current_dir -eq 1 ]; then
+						# ^ If it only found one file, set that to open
+						# If it finds another file, it will be reset again
+						file_open="$i"
+					fi
+				fi
+			done
+			if [ "$files_in_current_dir" == 1 ]; then
+				echo "[DEFAULT] Opening $file_open"
+			else
+				# ^ If it found more than 1 file in the current dir
+				exit 1
+			fi
+		elif [[ "$file_result_count" == 1 ]] ; then
+			# If there is 1 matching file (line in this case) and is not empty
+			file_open="$file_results"
+		fi
+		if [ "$file_open" != "" ]; then
 			if [[ $MODE_F -eq 0 ]]; then
 				# If user wants to open the file
 				if [[ $MODE_Q -eq 0 ]] ; then
 					# Print what file is being opened
-					echo "$(pwd)${file_results:1}"
+					echo "$(pwd)${file_open:1}"
 				fi
 				# Actually open the file
-				exec $EDITOR "$file_results"
+				exec $EDITOR "$file_open"
+			fi
 			else
 				# If user just wants the file path (without opening)
-				echo "$(pwd)${file_results:1}"
+				echo "$(pwd)${file_open:1}"
 			fi
-		else
-			# If there are multiple results, list them so the user can be more
-			# specific next time this program is run
-			echo "Multiple results!"
-			echo "$file_results"
-		fi
 		# Go back to whatever the directory was after the file is closed
 		# Go back to the previous directory
 		if [[ $NUM_ARGS -ne 0 ]]; then
 			exec cd $OLDPWD
 		fi
 	fi
+fi
 else
 	# If no arguments were given
 	echo "ERROR: You have to provide an input file shortcut!"
