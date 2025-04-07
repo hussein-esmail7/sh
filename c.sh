@@ -106,6 +106,8 @@ do
     base="${file##*.}"      # File extension only
     front="${file%.*}"		# File name before the extension
 
+    cd "$dir"
+
     case "$file" in
         *\.c) gcc -o "$front" "$file" ; chmod +x "$front" ; ./"$front" ;;
         *\.cpp) g++ -o "$front" "$file" ; chmod +x "$front" ; ./"$front" ;;
@@ -142,34 +144,46 @@ do
         *\.sh) chmod +x "$file" && ./"$file" ;;
 		*\.tex) # LaTeX files (compile)
 			# \usepackage{lua-ul}
+			if [[ -f "$front.pdf" ]] ; then
+				# If a compiled PDF exists before this, delete it
+				# If re-compiling references, it doesn't always update if the
+				# PDF already exists
+				rm -f "$front.pdf"
+			fi
 			if [[ $(grep "\usepackage{lua-ul}" "$file" | wc -l) -ge 1 ]] ; then
 				LATEX_ENGINE="lualatex"
 			else
-				LATEX_ENGINE="lualatex"
+				LATEX_ENGINE="/usr/local/texlive/2025basic/bin/universal-darwin/pdflatex -synctex=1 -interaction=batchmode"
+				echo "c.sh: Compiling using $LATEX_ENGINE"
 			fi
 			if [ $CONFIG_QUIET -eq 0 ] ; then
 				echo "c.sh: Compiling using $LATEX_ENGINE"
 			fi
-            $LATEX_ENGINE --interaction=batchmode "$file"
-            [[ $(grep "\cite{" "$file" | wc -l) -ge 1 || $(grep "\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\bibliography{" "$file" | wc -l) -ge 1 || $(grep "\bibliographystyle{" "$file" | wc -l) -ge 1  ]]; biber "$front"
-            [[ $(grep "\newglossaryentry" "$file" | wc -l) -ge 1 ]]; makeglossaries "$front"
-            $LATEX_ENGINE --interaction=batchmode "$file"
-            $LATEX_ENGINE --interaction=batchmode "$file" # Run a third time
+            $LATEX_ENGINE "$file"
+			[[ $(grep "{biblatex}" "$file" | wc -l) -ge 1 || $(grep "\\cite{" "$file" | wc -l) -ge 1 || $(grep "\\bibitem{" "$file" | wc -l) -ge 1 || $(grep "\\bibliography{" "$file" | wc -l) -ge 1 || $(grep "\\bibliographystyle{" "$file" | wc -l) -ge 1  ]] && echo "RUNNING BIBER $front" ; biber "$front"
+            # [[ $(grep "\\newglossaryentry" "$file" | wc -l) -ge 1 ]] && makeglossaries "$front"
+            # echo "2nd run"
+            $LATEX_ENGINE "$file"
+            # echo "3rd run"
+            $LATEX_ENGINE "$file"
 			if [ $CONFIG_KEEP_TEMP_FILES -eq 0 ] ; then
-				rm -f "${front}.aux" # Default output file
+				rm -f "${front}.aux" # Internal communication file
+				rm -f "${front}.snm" # Created when beamer is used (somehow)
             	rm -f "${front}.bbl" # Used for bibliographies
-            	rm -f "${front}.bcf"
-            	rm -f "${front}.blg"
+				rm -f "${front}.bcf" # BibLaTeX config (not BibTeX)
+            	rm -f "${front}.blg" # BibTeX Transcript
             	rm -f "${front}.fdb_latexmk"
             	rm -f "${front}.fls"
+            	rm -f "${front}.glo" # Raw glossary file
+            	rm -f "${front}.hdo" # Custom TOC byproduct
+            	rm -f "${front}.idx" # Raw index file
             	rm -f "${front}.lof" # Used to generate list of figures
-            	rm -f "${front}.log" # Default output file
+            	rm -f "${front}.log" # Output transcript
             	rm -f "${front}.lot" # Used to generate list of tables
             	rm -f "${front}.mx1" # Created when musictex package is used
             	rm -f "${front}.nav" # beamer temporary table of contents file
             	rm -f "${front}.out" # Default output file
             	rm -f "${front}.run.xml" # Default output file
-				rm -f "${front}.snm" # Created when beamer is used (somehow)
             	rm -f "${front}.synctex.gz" # Default output file
             	rm -f "${front}.tdo" # Used by todonotes package
             	rm -f "${front}.toc" # Used to make table of contents
@@ -187,12 +201,18 @@ do
         			open "${front}.pdf" # Will open in default PDF application
         		else
         			echo "ERROR: I don't know how to open PDFs in this OS: $OSTYPE"
-        			# If it ever reaches this and you have a solution, please submit
-        			# a pull request! I also want to make my code usable for others,
-        			# regardless of your operating system.
+					# If it ever reaches this and you have a solution, please
+					# submit a pull request! I also want to make my code usable
+					# for others, regardless of your operating system.
         		fi
 			fi
         ;;
+		*\.sty) # LaTeX style files
+			echo "LaTeX style file. Opening documentation if it exists."
+			if [[ -f "$front.pdf" ]] ; then
+        		open "${front}.pdf" # Will open in default PDF application
+			fi
+		;;
 		*)
 			if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 				echo "ERROR: I don't know what to do with $file!" ; exit 1
