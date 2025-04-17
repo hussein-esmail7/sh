@@ -14,3 +14,6 @@ New method for this script:
 	afterwards
 - Add "-s" or something for short file names while in vim
 
+## c.sh To Do
+- Make into its own git repo
+- Add '-b' option that opens files in background (if possible). If '-o' is not given, automatically invoke '-o' as well. Useful for bulk compiling many .tex documents to PDF
