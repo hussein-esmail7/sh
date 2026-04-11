@@ -153,7 +153,7 @@ do
 			if [[ $(grep "\usepackage{lua-ul}" "$file" | wc -l) -ge 1 ]] ; then
 				LATEX_ENGINE="lualatex"
 			else
-				LATEX_ENGINE="/usr/local/texlive/2025basic/bin/universal-darwin/pdflatex -synctex=1 -interaction=batchmode"
+				LATEX_ENGINE="/usr/local/texlive/*basic/bin/universal-darwin/pdflatex -synctex=1 -interaction=batchmode"
 				echo "c.sh: Compiling using $LATEX_ENGINE"
 			fi
 			if [ $CONFIG_QUIET -eq 0 ] ; then
