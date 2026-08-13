@@ -10,18 +10,35 @@ if [ -z "$string" ] ; then
     exit 1
 fi
 
-yt-dlp \ 
-	--no-check-certificate \
-	-R 100 \
-	--no-warnings \
-	--yes-playlist \
-	--trim-filenames 127 \
-	--embed-subs \
-	--write-automatic-subs \
-	--sub-lang "en.*" \
-	-S vcodec:h264,res,acodec:m4a \
-	--recode mp4 \
-	-o "%(upload_date>%Y)s %(upload_date>%m)s %(upload_date>%d)s %(title)s.%(ext)s"
+vid_title=$(yt-dlp --no-update --print "%(upload_date>%Y)s %(upload_date>%m)s %(upload_date>%d)s %(uploader)s - %(title)s.%(ext)s" --skip-download "$string")
+vid_id=$(yt-dlp --no-update --print "%(upload_date>%Y)s %(upload_date>%m)s %(upload_date>%d)s %(uploader)s - %(id)s.%(ext)s" --skip-download "$string")
+
+# String replacements for $vid_title
+# This is before the character limit check as it may impact that
+# PATTERN 1: For "74K views · 2.7K reactions ｜ " and "3.4K views · 5 comments ｜ " at video title prefix for FaceBook Reels
+regex_pattern1='[0-9]+(\.[0-9]+)?[KM]? views · [0-9]+(\.[0-9]+)?[KM]? (reactions|comments) \| '
+# PATTERN 2 and 3: For "Follow @USERNAME for more content". Treating them as 2 patterns to keep the username (and the "@")
+regex_pattern2="Follow @" # Replace with "@" to keep the username identifier there but just used to find the string
+regex_pattern3=" for more content" # Usually with "Follow @USERNAME for more content"
+regex_pattern4=" on Reels\." # Replace with "." which is the fine extension separator (used as my way of end of string when the file extension is still in the string)
+regex_pattern5=" \| " # Replace with " - " for less special characters
+vid_title=$(sed -E "s/$regex_pattern1//" <<< "$vid_title")
+vid_title=$(sed -E "s/$regex_pattern2/@/" <<< "$vid_title")
+vid_title=$(sed -E "s/$regex_pattern3//" <<< "$vid_title")
+vid_title=$(sed -E "s/$regex_pattern4/./" <<< "$vid_title")
+vid_title=$(sed -E "s/$regex_pattern5/ - /" <<< "$vid_title")
+
+if [[ ${#vid_title} -gt 100 ]]; then
+    # Title is longer than 100 characters
+	# This statement is to avoid Error #36 from yt-dlp: Title too long
+	echo "-------------- File name is long, will be downloaded as $vid_id"
+	yt-dlp --no-check-certificate -R 100 -q --progress --newline --yes-playlist --embed-subs --write-automatic-subs --sub-lang "en.*" -S vcodec:h264,res,acodec:m4a --recode mp4 -o "$vid_id" "$string" # Pass the actual URL
+else
+	yt-dlp --no-check-certificate -R 100 -q --progress --newline --yes-playlist --embed-subs --write-automatic-subs --sub-lang "en.*" -S vcodec:h264,res,acodec:m4a --recode mp4 -o "$vid_title" "$string" # Pass the actual URL
+fi
+
+
+
 
 # --no-check-certificate: Suppress HTTPS certificate validation
 # -R 100: Run with 100 retries
